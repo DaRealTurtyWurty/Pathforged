@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[43,)"
+license="LGPLv3"
+# issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/"
+[[mods]]
+modId="pathforged"
+version="${file.jarVersion}"
+displayName="Pathforged"
+# logoFile="pathforged.png"
+authors="TurtyWurty"
+displayTest="MATCH_VERSION"
+description='''A Minecraft mod that introduces an innovative system of dynamic block transformations. These blocks possess adjustable properties, providing the option to either modify their state or retain their original composition. To elaborate, envision a scenario where you step on grass, causing it to transition into coarse dirt. As time passes and you continue to walk upon it, this coarse dirt could undergo a gradual evolution, progressing through various stages like becoming a path block, and then further transitioning through elements such as gravel, stone, and beyond.'''
+
+[[dependencies.pathforged]]
+    modId="forge"
+    mandatory=true
+    versionRange="[43.2.21,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.pathforged]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19.2,1.20)"
+    ordering="NONE"
+    side="BOTH"

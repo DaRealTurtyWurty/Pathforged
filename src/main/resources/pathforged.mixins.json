@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "dev.turtywurty.pathforged.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "pathforged.refmap.json",
+  "mixins": [
+    "EntityMixin"
+  ],
+  "client": [],
+  "minVersion": "0.8.5"
+}
