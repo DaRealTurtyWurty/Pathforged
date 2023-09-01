@@ -1,0 +1,79 @@
+{
+  "roots": [
+    {
+      "block": "minecraft:grass_block",
+      "children": {
+        "null": {
+          "block": "minecraft:coarse_dirt",
+          "probability": 0.25,
+          "children": {
+            "null": {
+              "block": "minecraft:dirt_path",
+              "probability": 0.2,
+              "children": {
+                "null": {
+                  "block": "minecraft:gravel",
+                  "probability": 0.15,
+                  "children": {}
+                }
+              }
+            },
+            "minecraft:pig": {
+              "block": "minecraft:mycelium",
+              "probability": 0.1,
+              "children": {
+                "null": {
+                  "block": "minecraft:podzol",
+                  "probability": 0.05,
+                  "children": {}
+                },
+                "minecraft:sheep": {
+                  "block": "minecraft:moss_block",
+                  "probability": 0.05,
+                  "children": {}
+                },
+                "minecraft:cow": {
+                  "block": "minecraft:dirt",
+                  "probability": 0.05,
+                  "children": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "block": "minecraft:sand",
+      "children": {
+        "null": {
+          "block": "minecraft:red_sand",
+          "probability": 0.25,
+          "children": {
+            "null": {
+              "block": "minecraft:gravel",
+              "probability": 0.15,
+              "children": {}
+            },
+            "minecraft:husk": {
+              "block": "minecraft:soul_sand",
+              "probability": 0.1,
+              "children": {}
+            }
+          }
+        },
+        "minecraft:spider": {
+          "block": "minecraft:soul_sand",
+          "probability": 0.1,
+          "children": {
+            "null": {
+              "block": "minecraft:coal_block",
+              "probability": 0.15,
+              "children": {}
+            }
+          }
+        }
+      }
+    }
+  ]
+}
