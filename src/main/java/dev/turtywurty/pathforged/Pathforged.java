@@ -8,10 +8,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
+import org.checkerframework.checker.units.qual.K;
 import org.slf4j.Logger;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -24,6 +26,8 @@ public class Pathforged {
 
     public Pathforged() {
         LOGGER.info("Pathforged is loading!");
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfig.SERVER_CONFIG_SPEC, Pathforged.MOD_ID + "/server-config.toml");
     }
 
     public static TransformationTree getTransformationTree(Level level) {

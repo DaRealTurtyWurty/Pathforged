@@ -8,14 +8,13 @@ import dev.turtywurty.pathforged.event.EntityStepOnBlockEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
+import java.util.stream.StreamSupport;
 
 @Mod.EventBusSubscriber(modid = Pathforged.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EntityStepHandler {
@@ -26,20 +25,38 @@ public class EntityStepHandler {
         Entity entity = event.getEntity();
         if(entity.level.isClientSide())
             return;
+        if(entity instanceof Player player && player.isCreative() && ServerConfig.preventInCreative())
+            return;
+        if(ServerConfig.leatherBootsPreventTransformation() &&
+                StreamSupport.stream(entity.getArmorSlots().spliterator(), false)
+                        .anyMatch(stack -> stack.is(Items.LEATHER_BOOTS)))
+            return;
+
+        if(!ServerConfig.allowWater() && entity.isInWater())
+            return;
+        if(!ServerConfig.allowLava() && entity.isInLava())
+            return;
 
         Block block = event.getState().getBlock();
         BlockPos pos = event.getPosition();
 
         TransformationTree transformationTree = Pathforged.getTransformationTree(entity.getLevel());
         TransformationNode nextNode = transformationTree.getNext(entity.getType(), block);
+        if (nextNode == null)
+            return;
 
-        if (nextNode != null && RANDOM.nextFloat() <= nextNode.getProbability()) {
+        double probability = nextNode.getProbability();
+        double underwaterProbabilityDecrease = ServerConfig.underwaterProbabilityDecrease();
+        boolean shouldTransform = RANDOM.nextDouble() < (entity.isInWater() ? probability - underwaterProbabilityDecrease : probability);
+
+        if (shouldTransform) {
             Block nextBlock = nextNode.getBlock();
-            Pathforged.LOGGER.info("Entity {} transformed {} to {} at {}",
-                    entity.getName().getString(),
-                    block.getName().getString(),
-                    nextBlock.getName().getString(),
-                    pos);
+            if (ServerConfig.logTransformation())
+                Pathforged.LOGGER.info("Entity {} transformed {} to {} at {}",
+                        entity.getName().getString(),
+                        block.getName().getString(),
+                        nextBlock.getName().getString(),
+                        pos);
 
             entity.getLevel().setBlockAndUpdate(pos, nextBlock.defaultBlockState());
         }

@@ -2,16 +2,14 @@ package dev.turtywurty.pathforged.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dev.turtywurty.pathforged.Pathforged;
 import dev.turtywurty.pathforged.data.TransformationTree;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.LevelResource;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,6 +19,73 @@ import static dev.turtywurty.pathforged.data.TransformationNode.node;
 import static dev.turtywurty.pathforged.data.TransformationNode.root;
 
 public class ServerConfig {
+    public static final ForgeConfigSpec SERVER_CONFIG_SPEC;
+
+    static {
+        ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+        setupConfig(builder);
+        SERVER_CONFIG_SPEC = builder.build();
+    }
+
+    private static ForgeConfigSpec.BooleanValue leatherBootsPreventTransformation;
+    private static ForgeConfigSpec.BooleanValue allowWater;
+    private static ForgeConfigSpec.BooleanValue allowLava;
+    private static ForgeConfigSpec.DoubleValue underwaterProbabilityDecrease;
+    private static ForgeConfigSpec.BooleanValue preventInCreative;
+    private static ForgeConfigSpec.BooleanValue logTransformation;
+
+    private static void setupConfig(ForgeConfigSpec.Builder builder) {
+        builder.comment("Pathforged Server Config").push("serverconfig").pop();
+
+        leatherBootsPreventTransformation = builder.comment("Whether or not wearing leather boots will prevent the transformation of blocks.")
+                .translation(Pathforged.MOD_ID + ".config.leatherBootsPreventTransformation")
+                .define("leatherBootsPreventTransformation", true);
+
+        allowWater = builder.comment("Whether or not transformations will work in water.")
+                .translation(Pathforged.MOD_ID + ".config.allowWater")
+                .define("allowWater", true);
+
+        allowLava = builder.comment("Whether or not transformations will work in lava.")
+                .translation(Pathforged.MOD_ID + ".config.allowLava")
+                .define("allowLava", true);
+
+        underwaterProbabilityDecrease = builder.comment("The transformation probability decrease being underwater.")
+                .translation(Pathforged.MOD_ID + ".config.underwaterProbabilityDecrease")
+                .defineInRange("underwaterProbabilityDecrease", 0f, 0f, 1f);
+
+        preventInCreative = builder.comment("Whether or not transformations will be prevented in creative mode.")
+                .translation(Pathforged.MOD_ID + ".config.preventInCreative")
+                .define("preventInCreative", true);
+
+        logTransformation = builder.comment("Whether to log the transformation of blocks.")
+                .translation(Pathforged.MOD_ID + ".config.logTransformation")
+                .define("logTransformation", true);
+    }
+
+    public static boolean leatherBootsPreventTransformation() {
+        return leatherBootsPreventTransformation.get();
+    }
+
+    public static boolean allowWater() {
+        return allowWater.get();
+    }
+
+    public static boolean allowLava() {
+        return allowLava.get();
+    }
+
+    public static double underwaterProbabilityDecrease() {
+        return underwaterProbabilityDecrease.get();
+    }
+
+    public static boolean preventInCreative() {
+        return preventInCreative.get();
+    }
+
+    public static boolean logTransformation() {
+        return logTransformation.get();
+    }
+
     private static final TransformationTree DEFAULT_TREE = new TransformationTree.Builder()
             .addRoot(root(Blocks.GRASS_BLOCK)
                     .transformation(null, node(Blocks.COARSE_DIRT, 0.25f)
