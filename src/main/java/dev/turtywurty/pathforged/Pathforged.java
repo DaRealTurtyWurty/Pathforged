@@ -11,9 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
-import org.checkerframework.checker.units.qual.K;
 import org.slf4j.Logger;
 
 import java.util.concurrent.atomic.AtomicReference;
